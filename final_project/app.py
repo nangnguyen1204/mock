@@ -2,13 +2,20 @@ import os
 import base64
 import numpy as np
 import cv2
+
+
 from flask import Flask, render_template, request, jsonify
 
 # Load the pre-trained MNIST model
 from tensorflow.keras.models import load_model
 
-# load mode mnist_model.h5
-model = ...
+# path_model = '/home/nangnguyen/mock/final_project/mnist_model.h5'
+
+# #  load mode mnist_model.h5
+# with h5py.File(path_model, 'r') as file:
+#     model = load_model(file['model'])
+
+model = load_model('cnn_mnist_model.h5')
 
 app = Flask(__name__)
 
@@ -32,7 +39,7 @@ def predict_digit():
     img = cv2.imread(temp_image_path, cv2.IMREAD_GRAYSCALE)
 
     # resize ảnh --> 28x28
-    img = ...
+    img = cv2.resize(img, (28,28))
     # lưu ảnh để kiểm tra 
     cv2.imwrite('img_28x28.jpg', img)
 
@@ -40,7 +47,7 @@ def predict_digit():
     img = img.reshape(1, 28, 28, 1)
 
     # Normalize ảnh 
-    img = ...
+    img = img.astype('float32')/255.0
    
 
     # Dự đoán số
